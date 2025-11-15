@@ -37,6 +37,15 @@ $(document).on("submit", ".fn_variants", function (e) {
           touch: false,
         },
       });
+      if (
+        window.okayMinOrder &&
+        typeof window.okayMinOrder.applyCartState === "function"
+      ) {
+        window.okayMinOrder.applyCartState(
+          data.minimum_order_state,
+          data.minimum_order_warning
+        );
+      }
     },
   });
 });
@@ -1008,6 +1017,16 @@ function ajax_set_result(data) {
     }
   }
   $('input[name="delivery_id"]:checked').trigger("change");
+
+  if (
+    window.okayMinOrder &&
+    typeof window.okayMinOrder.applyCartState === "function"
+  ) {
+    window.okayMinOrder.applyCartState(
+      data.minimum_order_state,
+      data.minimum_order_warning
+    );
+  }
 }
 
 /* Аяксовое изменение кол-ва товаров в корзине */
@@ -1028,6 +1047,15 @@ function ajax_change_amount(object, variant_id) {
       } else {
         $("#cart_informer").html(data.cart_informer);
         $(".fn_ajax_content").html(data.content);
+        if (
+          window.okayMinOrder &&
+          typeof window.okayMinOrder.applyCartState === "function"
+        ) {
+          window.okayMinOrder.applyCartState(
+            data.minimum_order_state,
+            data.minimum_order_warning
+          );
+        }
       }
     },
   });
@@ -1140,6 +1168,15 @@ function ajax_remove(variant_id) {
       } else {
         $("#cart_informer").html(data.cart_informer);
         $(".fn_ajax_content").html(data.content);
+        if (
+          window.okayMinOrder &&
+          typeof window.okayMinOrder.applyCartState === "function"
+        ) {
+          window.okayMinOrder.applyCartState(
+            data.minimum_order_state,
+            data.minimum_order_warning
+          );
+        }
       }
     },
   });
