@@ -36,7 +36,9 @@ class Init extends AbstractInit
         $this->registerBackendController('SettingsAdmin');
         $this->addBackendControllerPermission('SettingsAdmin', 'order_settings');
 
-        $this->addBackendBlock('order_settings_custom_block', 'order_settings_block.tpl', OrderSettingsBlockHelper::class);
+        $this->addBackendBlock('order_settings_custom_block', 'order_settings_block.tpl', function (OrderSettingsBlockHelper $helper) {
+            $helper->assign();
+        });
 
         $this->registerChainExtension(
             [Cart::class, 'applyDiscounts'],
