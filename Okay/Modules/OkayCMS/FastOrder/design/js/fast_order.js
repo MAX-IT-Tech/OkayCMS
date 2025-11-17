@@ -2,6 +2,8 @@ $(document).on('click', '.fn_fast_order_button', function (e) {
     e.preventDefault();
 
     let variant,
+        variantPrice = null,
+        amount = 1,
         form_obj = $(this).closest("form.fn_variants");
 
     $("#fast_order_product_name").html($(this).data('name'));
@@ -10,8 +12,20 @@ $(document).on('click', '.fn_fast_order_button', function (e) {
     }
 
     if (form_obj.find('select[name=variant]').length > 0) {
-        variant = form_obj.find('select').val();
+        const $select = form_obj.find('select[name=variant]');
+        variant = $select.val();
+        variantPrice = parseFloat($select.find(':selected').data('price-base'));
     }
+
+    if (form_obj.find('input[name=amount]').length > 0) {
+        amount = parseFloat(form_obj.find('input[name=amount]').val()) || 1;
+    }
+
+    const $fastOrderForm = $("#fn_fast_order");
+    $fastOrderForm.find("input[name=amount]").val(amount);
+    $fastOrderForm.data('variantPrice', variantPrice);
+    $fastOrderForm.data('variantAmount', amount);
+    $fastOrderForm.data('categoryId', parseInt($(this).data('category'), 10) || null);
 
     $("#fast_order_variant_id").val(variant);
 
@@ -19,6 +33,10 @@ $(document).on('click', '.fn_fast_order_button', function (e) {
         src: '#fn_fast_order',
         type : 'inline'
     });
+
+    if (window.okayMinOrder && typeof window.okayMinOrder.updateFastOrderState === 'function') {
+        window.okayMinOrder.updateFastOrderState($fastOrderForm);
+    }
 });
 
 function sendAjaxFastOrderForm() {

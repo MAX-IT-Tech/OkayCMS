@@ -23,6 +23,7 @@
             <input type="hidden" name="IsFastOrder" value="true">
 
             <div class="message_error fn_fast_order_errors" style="display: none"></div>
+            <div class="message_error fn_fast_order_min_warning" style="display: none"></div>
 
             <div id="fast_order_product_name" class="h6"></div>
 
