@@ -37,7 +37,7 @@ class FrontendExtender implements ExtensionInterface
     {
         $state = $cart->minimum_order_amount ?? null;
         $result['minimum_order_state'] = $state;
-        $result['minimum_order_warning'] = $this->design->fetch('minimal_order_warning.tpl');
+        $result['minimum_order_warning'] = $this->renderWarningTemplate($state);
         return $result;
     }
 
@@ -60,6 +60,8 @@ class FrontendExtender implements ExtensionInterface
     {
         $cart = $this->cart->get();
         $state = $cart->minimum_order_amount ?? $this->service->getCartState($cart);
+        $this->design->assign('okaycms_min_order_state', $state);
+        $this->design->assign('okaycms_min_order_warning_html', $this->renderWarningTemplate($state));
         $this->design->assignJsVar('min_order_rules', $this->service->getRulesForJs());
         $this->design->assignJsVar('min_order_warning_template', $this->service->getWarningTemplate());
         $this->design->assignJsVar(
@@ -82,5 +84,15 @@ class FrontendExtender implements ExtensionInterface
         }
 
         return $errors;
+    }
+
+    private function renderWarningTemplate($state)
+    {
+        $this->design->setModuleDir(__CLASS__);
+        $this->design->assign('okaycms_min_order_warning_state', $state);
+        $warning = $this->design->fetch('minimal_order_warning.tpl');
+        $this->design->rollbackTemplatesDir();
+
+        return $warning;
     }
 }

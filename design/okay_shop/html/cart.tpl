@@ -139,9 +139,6 @@
                                                             {/if}
                                                         </div>
                                                     {/if}
-                                                    <div class="fn_min_order_container">
-                                                        {include file='minimal_order_warning.tpl'}
-                                                    </div>
                                                     <div class="f_row">
                                                         {* User's name *}
                                                         <div class="f_col-md-6 f_col-lg-12 f_col-xl-6">
@@ -213,8 +210,7 @@
 
                                                     <input type="hidden" name="checkout" value="1">
                                                     {* Submit button *}
-                                                    {assign var=min_order_state value=$cart->minimum_order_amount|default:null}
-                                                    <button class="form__button button--blick g-recaptcha fn_min_order_checkout" type="submit" name="checkout" {if !empty($min_order_state.blocked)}disabled{/if} {if $settings->captcha_type == "invisible"}data-sitekey="{$settings->public_recaptcha_invisible}" data-badge='bottomleft' data-callback="onSubmit"{/if} value="{$lang->cart_checkout}">
+                                                    <button class="form__button button--blick g-recaptcha" type="submit" name="checkout" {if $settings->captcha_type == "invisible"}data-sitekey="{$settings->public_recaptcha_invisible}" data-badge='bottomleft' data-callback="onSubmit"{/if} value="{$lang->cart_checkout}">
                                                         <span data-language="cart_button">{$lang->cart_button}</span>
                                                     </button>
                                                 </div>

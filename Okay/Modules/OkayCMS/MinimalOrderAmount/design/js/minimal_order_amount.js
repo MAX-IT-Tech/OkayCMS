@@ -19,6 +19,7 @@
             this.state = window.okay.min_order_initial_state || null;
             this.$container = $('.fn_min_order_container');
             this.applyCartState(this.state);
+            this.bindAjaxListeners();
         },
 
         applyCartState(state, warningHtml) {
@@ -140,6 +141,41 @@
                 return window.okay.convert(value, null, true, true);
             }
             return value;
+        },
+
+        bindAjaxListeners() {
+            $(document).ajaxSuccess((event, xhr) => {
+                const data = this.extractResponseJson(xhr);
+                if (data && Object.prototype.hasOwnProperty.call(data, 'minimum_order_state')) {
+                    this.applyCartState(data.minimum_order_state, data.minimum_order_warning);
+                }
+            });
+        },
+
+        extractResponseJson(xhr) {
+            if (!xhr) {
+                return null;
+            }
+            if (xhr.responseJSON && typeof xhr.responseJSON === 'object') {
+                return xhr.responseJSON;
+            }
+            let contentType = '';
+            if (typeof xhr.getResponseHeader === 'function') {
+                contentType = xhr.getResponseHeader('Content-Type') || '';
+            }
+            const isJson = contentType.indexOf('application/json') !== -1;
+            let responseText = xhr.responseText || '';
+            if (!isJson && (!responseText || (responseText.trim()[0] !== '{' && responseText.trim()[0] !== '['))) {
+                return null;
+            }
+            if (!responseText) {
+                return null;
+            }
+            try {
+                return JSON.parse(responseText);
+            } catch (e) {
+                return null;
+            }
         },
     };
 

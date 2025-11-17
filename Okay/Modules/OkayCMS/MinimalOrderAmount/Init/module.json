@@ -3,5 +3,41 @@
   "vendor": {
     "email": "info@okay-cms.com",
     "site": "https://okay-cms.com"
+  },
+  "modifications": {
+    "front": [
+      {
+        "file": "cart.tpl",
+        "changes": [
+          {
+            "find": "<div class=\"form__body\">",
+            "childrenFind": "<div class=\"f_row\">",
+            "appendBefore": "cart_min_order_container.tpl"
+          },
+          {
+            "find": "<button class=\"form__button button--blick g-recaptcha\" type=\"submit\" name=\"checkout\" {if $settings->captcha_type == \"invisible\"}data-sitekey=\"{$settings->public_recaptcha_invisible}\" data-badge='bottomleft' data-callback=\"onSubmit\"{/if} value=\"{$lang->cart_checkout}\">",
+            "replace": "cart_checkout_button.tpl"
+          }
+        ]
+      },
+      {
+        "file": "product.tpl",
+        "changes": [
+          {
+            "find": "<select name=\"variant\" class=\"fn_variant variant_select {if $product->variants|count < 2} hidden {else}fn_select2{/if}\">",
+            "replace": "product_variants_select.tpl"
+          }
+        ]
+      },
+      {
+        "file": "product_list.tpl",
+        "changes": [
+          {
+            "find": "<select name=\"variant\" class=\"fn_variant  variant_select {if $product->variants|count == 1}hidden{else}fn_select2{/if}\">",
+            "replace": "product_list_variants_select.tpl"
+          }
+        ]
+      }
+    ]
   }
 }
